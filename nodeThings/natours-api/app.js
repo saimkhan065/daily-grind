@@ -41,7 +41,43 @@ app.post("/api/v1/tours", (req, res) => {
     }
   );
 });
-
+//---------------------------------------
+//PARAMS
+app.get("/api/v1/tours/:id", (req, res) => {
+  const id = req.params.id * 1;
+  if (id > toursData.length) {
+    return res.status(404).json({
+      status: "fail",
+      reason: "Invalid tour ID",
+    });
+  }
+  const tour = toursData.find((tour) => tour.id === id);
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour,
+    },
+  });
+});
+//---------------------------------------
+//PATCH
+app.patch("/api/v1/tours/:id", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    data: {
+      toursData,
+    },
+  });
+});
+//---------------------------------------
+//DELETE
+app.delete("/api/v1/tours/:id", (req, res) => {
+  res.status(204).json({
+    status: "success",
+    message: "Delete Success.",
+  });
+});
+//---------------------------------------
 app.listen(port, () => {
   console.log(`App running on ${port}`);
 });
