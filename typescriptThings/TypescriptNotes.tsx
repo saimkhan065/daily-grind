@@ -46,7 +46,7 @@ get(object, path, [defaultValue]);
     The value returned if the resolved value is undefined.
 */
 
-export default function get<T>(
+export function get<T>(
   objectParam: Record<string, any>,
   pathParam: string | Array<string>,
   defaultValue?: T
@@ -65,3 +65,85 @@ export default function get<T>(
   const value = index && index === length ? obj : undefined;
   return (value !== undefined ? value : defaultValue) as T;
 }
+
+/*
+Submission API
+
+Upon submission, POST the form data to 
+https://www.greatfrontend.com/api/questions/contact-form with the 
+following fields in the request body: name, email, message.
+
+If all the form fields are correctly filled up, 
+you will see an alert containing a success message. Congratulations!
+
+Notes
+
+You do not need JavaScript for this question, 
+the focus is on HTML form validation and submission.
+*/
+/*
+import "./styles.css";
+import submitForm from "./submitForm";
+
+export function App() {
+  return (
+    <form
+      // Ignore the onSubmit prop, it's used by GFE to
+      // intercept the form submit event to check your solution.
+      action="https://www.greatfrontend.com/api/questions/contact-form"
+      method="post"
+      onSubmit={submitForm}
+    >
+      <div>
+        <label>Name</label>
+        <input name="name" type="text" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input name="email" type="text" />
+      </div>
+      <div>
+        <label>Message</label>
+        <input name="message" type="textarea" />
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
+  );
+}
+*/
+/*
+ Array.prototype.filter creates a new array populated with the 
+ results of calling a provided function on every element in the calling array.
+
+For sparse arrays (e.g. [1, 2, , 4]), the empty values should be 
+ignored while traversing the array (i.e. they should not be in the resulting array).
+
+Implement Array.prototype.filter. 
+To avoid overwriting the actual Array.prototype.filter which is being used by the autograder, we shall instead implement it as Array.prototype.myFilter.
+ */
+interface Array<T> {
+  myFilter(
+    callbackFn: (value: T, index: number, array: Array<T>) => boolean,
+    thisArg?: any
+  ): Array<T>;
+}
+
+Array.prototype.myFilter = function (callbackFn, thisArg) {
+  const len = this.length;
+  const results = [];
+
+  for (let k = 0; k < len; k++) {
+    const kValue = this[k];
+    if (
+      // Ignore index if value is not defined for index (e.g. in sparse arrays).
+      Object.hasOwn(this, k) &&
+      callbackFn.call(thisArg, kValue, k, this)
+    ) {
+      results.push(kValue);
+    }
+  }
+
+  return results;
+};
