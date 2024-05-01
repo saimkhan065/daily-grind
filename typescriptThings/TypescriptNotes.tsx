@@ -24,3 +24,44 @@ const enum Size {
   Large = 3,
 }
 let mySize: Size = Size.Large;
+
+//GreatFrontEnd Practice
+
+//Lodash's Get method
+/*
+Lodash's _.get method was created as a solution for such use cases.
+
+Let's write our own version as a get function. 
+The function gets the value at path of object. 
+If the resolved value is undefined, the defaultValue is returned in its place. 
+The function signature is as such:
+
+get(object, path, [defaultValue]);
+
+    object: The object to query.
+    path: The path of the property to get. 
+    It can be a string with . as the separator between fields, 
+    or an array of path strings.
+    defaultValue: Optional parameter. 
+    The value returned if the resolved value is undefined.
+*/
+
+export default function get<T>(
+  objectParam: Record<string, any>,
+  pathParam: string | Array<string>,
+  defaultValue?: T
+): T {
+  const path = Array.isArray(pathParam) ? pathParam : pathParam.split(".");
+
+  let index = 0;
+  let length = path.length;
+  let obj = objectParam;
+
+  while (obj != null && index < length) {
+    obj = obj[String(path[index])];
+    index++;
+  }
+
+  const value = index && index === length ? obj : undefined;
+  return (value !== undefined ? value : defaultValue) as T;
+}
